@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>你能精准的按出一秒吗?</title>
+    <link rel="icon" type="image/GIF" href="res/icon.png"/>
+    <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="full-screen" content="yes">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+   <style>
+        body,canvas,div {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            -khtml-user-select: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+        }
+    </style>
+</head>
+<body style="padding:0; margin: 0; background: #000;">
+<div style="display: none"> <img src="http://115.159.125.227/OneSecond/res/icon.png" /> </div>
+<script src="res/loading.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<canvas id="gameCanvas" width="450" height="800"></canvas>
+
+<script cocos src="game.min.js"></script>
+<?php
+require_once "jssdk.php";
+$jssdk = new JSSDK("yourAppID", "yourAppSecret");
+$signPackage = $jssdk->GetSignPackage();
+?>
+<?php
+$news = array("Title"=>"微信公众平台开发实践", "Description"=>"本书共分10章，案例程序采用广泛流行的PHP、MySQL、XML、CSS、JavaScript、HTML5等程序语言及数据库实现。", "PicUrl" =>'http://115.159.125.227/OneSecond/res/icon.png?from=singlemessage&isappinstalled=0', "Url" =>'http://115.159.125.227/OneSecond/index.html?from=singlemessage&isappinstalled=0');
+?>
+<script>
+    wx.config({
+        debug: false,
+        appId: '<?php echo $signPackage["appId"];?>',
+        timestamp: '<?php echo $signPackage["timestamp"];?>',
+        nonceStr: '<?php echo $signPackage["nonceStr"];?>',
+        signature: '<?php echo $signPackage["signature"];?>',
+        jsApiList: [
+        // 所有要调用的 API 都要加到这个列表中
+        'checkJsApi',
+        'openLocation',
+        'getLocation',
+        'onMenuShareTimeline',
+        'onMenuShareAppMessage'
+    ]
+    });
+
+    wx.ready(function () {
+//获取“分享到朋友圈”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareTimeline({
+            title: '我就是我', // 分享标题
+            link: 'http://115.159.125.227/OneSecond/index.html', // 分享链接
+            imgUrl: 'http://115.159.125.227/OneSecond/res/icon.png', // 分享图标
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                alert("感谢分享");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                alert("求求你分享");
+            }
+        });
+
+        //获取“分享给朋友”按钮点击状态及自定义分享内容接口
+        wx.onMenuShareAppMessage({
+            title: '我就是我', // 分享标题
+            desc: '你是谁', // 分享描述
+            link: 'http://115.159.125.227/OneSecond/index.html', // 分享链接
+            imgUrl: 'http://115.159.125.227/OneSecond/res/icon.png', // 分享图标
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                alert("感谢分享");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                alert("求求你分享");
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
